@@ -1,7 +1,6 @@
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
-
 class Base(DeclarativeBase):
     pass
 
@@ -15,11 +14,11 @@ class Database:
             class_=AsyncSession
         )
         
-database: Database
+database: Database = Database()
 
 async def init():
     global database
-    database = Database()
-    
     async with database.engine.begin() as session:
         await session.run_sync(Base.metadata.create_all)
+
+    return database

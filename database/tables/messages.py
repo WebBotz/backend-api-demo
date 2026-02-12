@@ -2,7 +2,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import INTEGER, Boolean, VARCHAR, select, update
 from pydantic import BaseModel, Field, ConfigDict
 
-from database.database import Base, Database, database
+from database.database import Base, database
 
 class MessageSchema(BaseModel):
     id: int
@@ -10,7 +10,6 @@ class MessageSchema(BaseModel):
     by_bot: bool
     content: str = Field(max_length=2048)
     seen_by_bot: bool
-    
     model_config = ConfigDict(from_attributes=True)
 
 class Message(Base):
@@ -57,9 +56,9 @@ async def save_message(message: Message):
         await session.merge(message)
         await session.commit()
         
-async def mark_as_seen(message_id: int, bot_id: int):
+async def mark_as_seen(message_id: int):
     async with database.Session() as session:
-        query = update(Message).where(Message.id==message_id, Message.bot_id==bot_id).values(seen_by_bot=True)
+        query = update(Message).where(Message.id==message_id).values(seen_by_bot=True)
         result = await session.execute(query)
         await session.commit()
         return result != 0
