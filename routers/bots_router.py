@@ -7,7 +7,7 @@ router = APIRouter(
     prefix="/api/v0/bot",
 )
 
-@router.get("/bots-full", summary="Get all bot list", tags=["Test API"])
+@router.get("/bots-full", summary="Get all bot list", tags=["Test API"], deprecated=True)
 async def get_all_bots():
     # ЗАПРЕТИТЬ ДОСТУП К ЭТОМУ ЭНДПОИНТУ, ТК ОН ПОКАЗЫВАЕТ ТОКЕНЫ
     bot_list = await bots.get_all()
@@ -29,8 +29,8 @@ async def send_bot_message(body: BotMessageBodySchema):
         seen_by_bot = True
     )
     
-    await messages.save_message(message)
-    return { "success" : True }
+    message = await messages.save_message(message)
+    return message
     
 @router.get("/update/{token}", summary="Bot update")
 async def bot_update(token: str):

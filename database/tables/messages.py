@@ -29,12 +29,21 @@ class Message(Base):
     
 
 async def get_all():
+    """
+    Get all messages
+    :return: Message list
+    """
     async with database.Session() as session:
         query = select(Message)
         result = await session.execute(query)
         return result.scalars().all()
         
 async def get_by_bot_id(bot_id: int):
+    """
+    Get all messages sent to bot
+    :param bot_id: Bot id
+    :return: Message list
+    """
     async with database.Session() as session:
         query = select(Message).where(Message.bot_id == bot_id)
         
@@ -52,11 +61,24 @@ async def get_for_bot_update(bot_id: int):
         return result.scalars().all()
         
 async def save_message(message: Message):
+    """
+    Save new message
+    :param message: Message object
+    :return: Created message
+    """
     async with database.Session() as session:
-        await session.merge(message)
+        session.merge(message)
         await session.commit()
+        await session.refresh(message)
+
+        return message
         
 async def mark_as_seen(message_id: int):
+    """
+    Mark message as seen (handled) by bot
+    :param message_id: Message id
+    :return: Status
+    """
     async with database.Session() as session:
         query = update(Message).where(Message.id==message_id).values(seen_by_bot=True)
         result = await session.execute(query)

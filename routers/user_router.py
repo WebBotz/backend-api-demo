@@ -25,10 +25,11 @@ async def send_user_message(body: UserMessageBodySchema):
         content = body.content,
         seen_by_bot = False
     )
-    
-    await messages.save_message(message)
 
-@router.post("/bot")
+    message = await messages.save_message(message)
+    return message
+
+@router.post("/bot", summary="Make a new bot")
 async def create_bot(body: CreateBotBodySchema):
     bot = await bots.create_new(body.name, body.description)
     return bot
