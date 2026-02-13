@@ -6,10 +6,6 @@ from routers import user_router, bots_router
 from database import database
 
 app = FastAPI()
-
-@app.get("/")
-def index():
-    return "test"
     
 app.include_router(
     user_router.router,
