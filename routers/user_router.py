@@ -7,8 +7,12 @@ router = APIRouter(
     prefix="/api/v0/user"
 )
 
+
 @router.get("/messages", tags=["Test API"])
 async def get_all_messages():
+    """
+    TEST API: Get all messages list
+    """
     # TODO: ПРОВЕРКА АВТОРИЗАЦИИ
     msg_list = await messages.get_all()
     message_schemas = []
@@ -18,6 +22,9 @@ async def get_all_messages():
     
 @router.post("/message", summary="Send user message")
 async def send_user_message(body: UserMessageBodySchema):
+    """
+    Send message as user
+    """
     # АВТОРИЗАЦИЯ ПО КУКИ ПОЛЬЗОВАТЕЛЯ
     message = messages.Message(
         by_bot = False,
@@ -31,6 +38,9 @@ async def send_user_message(body: UserMessageBodySchema):
 
 @router.post("/bot", summary="Make a new bot")
 async def create_bot(body: CreateBotBodySchema):
+    """
+    Create new bot and get it
+    """
     bot = await bots.create_new(body.name, body.description)
     return bot
 

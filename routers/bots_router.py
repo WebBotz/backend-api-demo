@@ -9,6 +9,9 @@ router = APIRouter(
 
 @router.get("/bots-full", summary="Get all bot list", tags=["Test API"], deprecated=True)
 async def get_all_bots():
+    """
+    Get full list of bots (WITH TOKENS). SHOULD NOT BE ABLE FOR USERS
+    """
     # ЗАПРЕТИТЬ ДОСТУП К ЭТОМУ ЭНДПОИНТУ, ТК ОН ПОКАЗЫВАЕТ ТОКЕНЫ
     bot_list = await bots.get_all()
     bot_schemas = []
@@ -18,6 +21,9 @@ async def get_all_bots():
 
 @router.post("/message", summary="Send bot message")
 async def send_bot_message(body: BotMessageBodySchema):
+    """
+    Send message as bot
+    """
     bot = await bots.get_by_token(body.bot_token)
     if bot is None:
         raise HTTPException(status_code=403, detail="Incorrect bot token")
@@ -34,6 +40,9 @@ async def send_bot_message(body: BotMessageBodySchema):
     
 @router.get("/update/{token}", summary="Bot update")
 async def bot_update(token: str):
+    """
+    Get user messages, sent to specified bot, but not seen (handled) yet
+    """
     bot = await bots.get_by_token(token)
     if bot is None:
         raise HTTPException(status_code=403, detail="Incorrect bot token")
@@ -47,6 +56,9 @@ async def bot_update(token: str):
     
 @router.put("/seen", summary="Mark user message as seen by bot")
 async def seen_by_bot(body: SeenByBotBodySchema):
+    """
+    Mark message as seen (handled)
+    """
     bot = await bots.get_by_token(body.bot_token)
     if bot is None:
         raise HTTPException(status_code=403, detail="Incorrect bot token")
