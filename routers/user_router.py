@@ -33,3 +33,15 @@ async def send_user_message(body: UserMessageBodySchema):
 async def create_bot(body: CreateBotBodySchema):
     bot = await bots.create_new(body.name, body.description)
     return bot
+
+
+@router.get("/bot-list", summary="Get public bot list")
+async def get_bot_list():
+    """
+    Get list of bots (without tokens)
+    """
+    bot_list = await bots.get_all()
+    bot_schemas = []
+    for bot in bot_list:
+        bot_schemas.append(BotPublicSchema.model_validate(bot))
+    return bot_schemas

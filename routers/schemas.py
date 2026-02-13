@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+
 
 class UserMessageBodySchema(BaseModel):
     """
@@ -27,3 +28,13 @@ class CreateBotBodySchema(BaseModel):
     """
     name: str = Field(max_length=64)
     description: str = Field(max_length=2048)
+
+class BotPublicSchema(BaseModel):
+    """
+    Schema contains bot object without secret token
+    """
+    id: int
+    name: str = Field(max_length=64)
+    description: str = Field(max_length=255)
+
+    model_config = ConfigDict(extra="ignore", from_attributes=True) # Removes token from schema
