@@ -26,7 +26,7 @@ class CreateBotBodySchema(BaseModel):
     """
     Body schema for user's request to make a new bot
     """
-    name: str = Field(max_length=64)
+    name: str = Field(max_length=32)
     description: str = Field(max_length=2048)
 
 class BotPublicSchema(BaseModel):
@@ -34,7 +34,7 @@ class BotPublicSchema(BaseModel):
     Schema contains bot object without secret token
     """
     id: int
-    name: str = Field(max_length=64)
+    name: str = Field(max_length=32)
     description: str = Field(max_length=255)
 
     model_config = ConfigDict(extra="ignore", from_attributes=True) # Removes token from schema
