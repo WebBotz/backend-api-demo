@@ -27,4 +27,4 @@ app.include_router(
 
 if __name__ == "__main__":
     asyncio.run(database.init())
-    run(app)
+    run(app, access_log=False)
