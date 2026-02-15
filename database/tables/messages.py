@@ -78,7 +78,7 @@ async def save_message(message: Message):
     :return: Created message
     """
     async with database.Session() as session:
-        session.merge(message)
+        session.add(message)
         await session.commit()
         await session.refresh(message)
 
