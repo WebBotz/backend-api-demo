@@ -19,7 +19,18 @@ async def get_all_messages():
     for msg in msg_list:
          message_schemas.append(messages.MessageSchema.model_validate(msg))
     return message_schemas
-    
+
+@router.get("/messages/{bot_id}/{last_id}")
+async def get_messages(bot_id: int, last_id: int):
+    """
+    Get messages for user client by specified bot and last message id
+    """
+    msg_list = await messages.get_by_bot_and_from_id(bot_id, last_id)
+    message_schemas = []
+    for msg in msg_list:
+        message_schemas.append(messages.MessageSchema.model_validate(msg))
+    return message_schemas
+
 @router.post("/message", summary="Send user message")
 async def send_user_message(body: UserMessageBodySchema):
     """

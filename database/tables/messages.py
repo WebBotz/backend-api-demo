@@ -49,6 +49,17 @@ async def get_by_bot_id(bot_id: int):
         
         result = await session.execute(query)
         return result.scalars().all()
+
+async def get_by_bot_and_from_id(bot_id: int, last_message_id: int):
+    """
+    Get messages for user client
+    :param bot_id: Bot id
+    :param last_message_id: Last message id received by client
+    """
+    async with database.Session() as session:
+        query = select(Message).where(Message.bot_id == bot_id, Message.id > last_message_id)
+        result = await session.execute(query)
+        return result.scalars().all()
         
 async def get_for_bot_update(bot_id: int):
     """
