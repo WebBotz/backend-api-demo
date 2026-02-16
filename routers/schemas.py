@@ -35,6 +35,6 @@ class BotPublicSchema(BaseModel):
     """
     id: int
     name: str = Field(max_length=32)
-    description: str = Field(max_length=255)
+    description: str = Field(max_length=100)
 
     model_config = ConfigDict(extra="ignore", from_attributes=True) # Removes token from schema

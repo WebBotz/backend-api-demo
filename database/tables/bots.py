@@ -9,7 +9,7 @@ from database.database import Base, database
 class BotSchema(BaseModel):
     id: int
     name: str = Field(max_length=32)
-    description: str = Field(max_length=255)
+    description: str = Field(max_length=100)
     token: str = Field(max_length=64)
     model_config = ConfigDict(from_attributes=True)
 
@@ -18,7 +18,7 @@ class Bot(Base):
     
     id: Mapped[int] = mapped_column(INTEGER, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(VARCHAR(32))
-    description: Mapped[str] = mapped_column(VARCHAR(255), nullable=True)
+    description: Mapped[str] = mapped_column(VARCHAR(100), nullable=True)
     token: Mapped[str] = mapped_column(VARCHAR(64))
     
     @staticmethod
