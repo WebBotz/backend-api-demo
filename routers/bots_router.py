@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException
 
 from database.tables import messages, bots
-from routers.schemas import *
+from utils.schemas import *
 
 router = APIRouter(
     prefix="/api/v0/bot",
 )
+
 
 @router.get("/bots-full", summary="Get all bot list", tags=["Test API"], deprecated=True)
 async def get_all_bots():
@@ -19,6 +20,7 @@ async def get_all_bots():
         bot_schemas.append(bots.BotSchema.model_validate(bot))
     return bot_schemas
 
+
 @router.post("/message", summary="Send bot message")
 async def send_bot_message(body: BotMessageBodySchema):
     """
@@ -29,15 +31,16 @@ async def send_bot_message(body: BotMessageBodySchema):
         raise HTTPException(status_code=403, detail="Incorrect bot token")
 
     message = messages.Message(
-        by_bot = True,
-        bot_id = bot.id,
-        content = body.content,
-        seen_by_bot = True
+        by_bot=True,
+        bot_id=bot.id,
+        content=body.content,
+        seen_by_bot=True
     )
-    
+
     message = await messages.save_message(message)
     return message
-    
+
+
 @router.get("/update/{token}", summary="Bot update")
 async def bot_update(token: str):
     """
@@ -48,12 +51,13 @@ async def bot_update(token: str):
         raise HTTPException(status_code=403, detail="Incorrect bot token")
 
     msg_list = await messages.get_for_bot_update(bot.id)
-    
+
     message_schemas = []
     for msg in msg_list:
         message_schemas.append(messages.MessageSchema.model_validate(msg))
     return message_schemas
-    
+
+
 @router.put("/seen", summary="Mark user message as seen by bot")
 async def seen_by_bot(body: SeenByBotBodySchema):
     """
@@ -64,4 +68,4 @@ async def seen_by_bot(body: SeenByBotBodySchema):
         raise HTTPException(status_code=403, detail="Incorrect bot token")
 
     status = await messages.mark_as_seen(body.message_id)
-    return { "success" : status }
+    return {"success": status}

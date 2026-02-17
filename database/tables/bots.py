@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field, ConfigDict
 
 from database.database import Base, database
 
+
 class BotSchema(BaseModel):
     id: int
     name: str = Field(max_length=32)
@@ -13,14 +14,15 @@ class BotSchema(BaseModel):
     token: str = Field(max_length=64)
     model_config = ConfigDict(from_attributes=True)
 
+
 class Bot(Base):
     __tablename__ = "bots"
-    
+
     id: Mapped[int] = mapped_column(INTEGER, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(VARCHAR(32))
     description: Mapped[str] = mapped_column(VARCHAR(100), nullable=True)
     token: Mapped[str] = mapped_column(VARCHAR(64))
-    
+
     @staticmethod
     def from_schema(schema: BotSchema):
         bot = Bot(**schema.model_dump())
@@ -37,6 +39,7 @@ async def get_all():
         query = select(Bot)
         result = await session.execute(query)
         return result.scalars().all()
+
 
 async def create_new(name: str, description: str) -> Bot:
     """
@@ -56,7 +59,8 @@ async def create_new(name: str, description: str) -> Bot:
         await session.refresh(bot)
 
         return bot
-        
+
+
 async def get_by_token(token: str) -> Bot | None:
     """
     Find bot by token

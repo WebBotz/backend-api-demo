@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run
 import asyncio
 
-from routers import user_router, bots_router
+from routers import user_router, bots_router, auth_router
 from database import database
 
 app = FastAPI()
@@ -23,6 +23,10 @@ app.include_router(
 app.include_router(
     bots_router.router,
     tags=["Bot API"]
+)
+app.include_router(
+    auth_router.router,
+    tags=["User auth API"]
 )
 
 if __name__ == "__main__":

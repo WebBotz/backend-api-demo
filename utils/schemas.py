@@ -8,12 +8,14 @@ class UserMessageBodySchema(BaseModel):
     bot_id: int
     content: str = Field(max_length=2048)
 
+
 class BotMessageBodySchema(BaseModel):
     """
     Body schema for bot's request to create new message
     """
     bot_token: str
     content: str = Field(max_length=2048)
+
 
 class SeenByBotBodySchema(BaseModel):
     """
@@ -22,12 +24,14 @@ class SeenByBotBodySchema(BaseModel):
     bot_token: str
     message_id: int
 
+
 class CreateBotBodySchema(BaseModel):
     """
     Body schema for user's request to make a new bot
     """
     name: str = Field(max_length=32)
     description: str = Field(max_length=2048)
+
 
 class BotPublicSchema(BaseModel):
     """
@@ -37,4 +41,17 @@ class BotPublicSchema(BaseModel):
     name: str = Field(max_length=32)
     description: str = Field(max_length=100)
 
-    model_config = ConfigDict(extra="ignore", from_attributes=True) # Removes token from schema
+    model_config = ConfigDict(extra="ignore", from_attributes=True)  # Removes token from schema
+
+
+class AuthBodySchema(BaseModel):
+    password: str
+
+
+class UserAuthTokenSchema(BaseModel):
+    token: str
+    expire_at: int
+
+
+class UserTokenValidateBodySchema(BaseModel):
+    token: str

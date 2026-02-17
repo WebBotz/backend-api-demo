@@ -1,13 +1,16 @@
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
+
 class Base(DeclarativeBase):
     pass
+
 
 class Database:
     """
     Database class. Contains DB engine and session factory
     """
+
     def __init__(self):
         self.engine = create_async_engine("sqlite+aiosqlite:///./database.db")
         self.Session = async_sessionmaker(
@@ -16,8 +19,10 @@ class Database:
             autoflush=False,
             class_=AsyncSession
         )
-        
+
+
 database: Database = Database()
+
 
 async def init():
     global database
