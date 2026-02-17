@@ -11,7 +11,6 @@ router = APIRouter(
 @router.post("/token", summary="Generate auth token by password")
 async def generate_auth_token(body: AuthBodySchema):
     passwords = os.getenv("PASSWORDS").split("///")
-    passwords = ["1234"]
     if body.password in passwords:
         return auth.create_new_token()
     else:
