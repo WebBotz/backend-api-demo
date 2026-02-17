@@ -10,6 +10,7 @@ accessed_auth_tokens: List[UserAuthTokenSchema] = []
 
 
 def create_new_token() -> UserAuthTokenSchema:
+    global accessed_auth_tokens
     """
     Generate and save new user token
     :return: User token and expiration timestamp
@@ -24,6 +25,7 @@ def create_new_token() -> UserAuthTokenSchema:
 
 
 def check_token(token: str) -> bool:
+    global accessed_auth_tokens
     """
     Check is token valid and not expired
     :param token: User auth token

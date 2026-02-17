@@ -38,7 +38,6 @@ async def send_user_message(body: UserMessageBodySchema):
     """
     Send message as user
     """
-    # АВТОРИЗАЦИЯ ПО КУКИ ПОЛЬЗОВАТЕЛЯ
     message = messages.Message(
         by_bot=False,
         bot_id=body.bot_id,
